@@ -1,13 +1,16 @@
 package layout;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.quisy.calculator.R;
 
@@ -42,6 +45,12 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
         initButtons(view);
         display = (EditText) view.findViewById(R.id.display);
 
+        display.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
 
         return view;
     }
@@ -154,7 +163,11 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
                     result *= op2;
                     break;
                 case DIV_OPERATION:
-                    result /= op2;
+                    if (op2 != 0)
+                        result /= op2;
+                    else
+                        sendToastMessage("Division by zero! Nothing done.");
+
                     break;
             }
 
@@ -182,6 +195,18 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
     private void updateResult(float value) {
         result = value;
     }
+
+
+    private void sendToastMessage(String message)
+    {
+        Context context = getActivity().getApplicationContext();
+        CharSequence text = message;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
 
     private void initButtons(View v) {
         zero = (Button) v.findViewById(R.id.btn_0);

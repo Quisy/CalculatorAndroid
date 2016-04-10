@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CalcAdvancedActivity.class);
-                intent.putExtra("CalcType","advanced");
+                intent.putExtra(CALC_TYPE,"advanced");
                 startActivity(intent);
             }
         });

@@ -25,7 +25,9 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/display"
                 android:layout_span="4"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:inputType="none"
+                android:textIsSelectable="true"/>
 
         </TableRow>
 
