@@ -13,6 +13,8 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String CALC_TYPE = "CalcType";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CalcActivity.class);
+                intent.putExtra(CALC_TYPE,"simple");
+                startActivity(intent);
+            }
+        });
+
+        btnAdvanced.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CalcActivity.class);
+                intent.putExtra("CalcType","advanced");
                 startActivity(intent);
             }
         });
