@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdvanced.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CalcActivity.class);
+                Intent intent = new Intent(MainActivity.this, CalcAdvancedActivity.class);
                 intent.putExtra("CalcType","advanced");
                 startActivity(intent);
             }

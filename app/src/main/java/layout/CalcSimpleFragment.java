@@ -22,11 +22,11 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
     private static float op1 = 0, op2 = 0;
     private static boolean isCleared = true;
     private static String nextOperation = "";
-    public static final String  ADD_OPERATION = "add";
-    public static final String  SUB_OPERATION = "sub";
-    public static final String  MUL_OPERATION = "mul";
-    public static final String  DIV_OPERATION = "div";
-    public static final String  EQUAL_OPERATION = "equal";
+    public static final String ADD_OPERATION = "add";
+    public static final String SUB_OPERATION = "sub";
+    public static final String MUL_OPERATION = "mul";
+    public static final String DIV_OPERATION = "div";
+    public static final String EQUAL_OPERATION = "equal";
     Button zero, one, two, three, four, five, six, seven, eight, nine, add, sub, mul, div, equal, cancel, delete, dot, sign;
     EditText display;
 
@@ -102,20 +102,16 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void changeSign()
-    {
+    private void changeSign() {
         if (op1 == 0) {
             updateResult(Float.parseFloat(display.getText().toString()) * -1);
             display.setText(Float.toString(result));
-        }
-        else
+        } else
             display.setText(Float.toString(Float.parseFloat(display.getText().toString()) * -1));
     }
 
-    private void appendChar(Button btn)
-    {
-        if (nextOperation != "" && !isCleared)
-        {
+    private void appendChar(Button btn) {
+        if (nextOperation != "" && !isCleared) {
             isCleared = true;
             display.setText("");
         }
@@ -124,34 +120,30 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
         display.setText(text.append(btn.getText()));
     }
 
-    private void deleteChar()
-    {
+    private void deleteChar() {
         Editable text = display.getText();
         int length = text.length();
         if (length == 1)
             display.setText("0");
-        else if (text.toString().substring(length-2,length-1).equals("."))
-            display.setText(text.delete(length-2,length));
+        else if (text.toString().substring(length - 2, length - 1).equals("."))
+            display.setText(text.delete(length - 2, length));
         else
-            display.setText(text.delete(length-1,length));
+            display.setText(text.delete(length - 1, length));
 
         if (op1 == 0)
             updateResult(Float.parseFloat(display.getText().toString()));
     }
 
-    private void clearDisplay()
-    {
+    private void clearDisplay() {
         display.setText("");
         updateResult(0);
-        nextOperation= "";
+        nextOperation = "";
     }
 
-    private void doOperation(String operationType)
-    {
-        if (op1 != 0)
-        {
+    private void doOperation(String operationType) {
+        if (op1 != 0) {
             op2 = Float.parseFloat(display.getText().toString());
-            switch (nextOperation.toLowerCase()){
+            switch (nextOperation.toLowerCase()) {
                 case ADD_OPERATION:
                     result += op2;
                     break;
@@ -167,22 +159,17 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
             }
 
             display.setText(Float.toString(result));
-            if (operationType != EQUAL_OPERATION)
-            {
+            if (operationType != EQUAL_OPERATION) {
                 nextOperation = operationType;
                 op1 = Float.parseFloat(display.getText().toString());
-            }
-            else
-            {
+            } else {
                 nextOperation = "";
                 op1 = 0;
             }
 
 
             isCleared = false;
-        }
-        else
-        {
+        } else {
             updateResult(Float.parseFloat(display.getText().toString()));
             op1 = Float.parseFloat(display.getText().toString());
             nextOperation = operationType;
@@ -192,13 +179,11 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void updateResult(float value)
-    {
+    private void updateResult(float value) {
         result = value;
     }
 
-    private void initButtons(View v)
-    {
+    private void initButtons(View v) {
         zero = (Button) v.findViewById(R.id.btn_0);
         zero.setOnClickListener(this);
         one = (Button) v.findViewById(R.id.btn_1);
