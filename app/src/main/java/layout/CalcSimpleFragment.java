@@ -126,7 +126,11 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
         }
 
         Editable text = display.getText();
-        display.setText(text.append(btn.getText()));
+        if((!text.toString().contains(".") && btn == dot) || btn != dot)
+        {
+            display.setText(text.append(btn.getText()));
+        }
+
     }
 
     private void deleteChar() {
