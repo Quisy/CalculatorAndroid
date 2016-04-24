@@ -165,6 +165,7 @@ public class CalcAdvancedFragment extends Fragment implements View.OnClickListen
         display.setText("");
         updateResult(Double.parseDouble("0"));
         nextOperation = "";
+
     }
 
     private void doOperation(String operationType) {
