@@ -106,6 +106,9 @@ public class CalcFunctions {
                 case DIVIDE:
                     divide();
                     break;
+                case POWER:
+                    power();
+                    break;
             }
             if (operation.equals(Operations.EQUAL)) {
                 setDisplayText(Double.toString(getResult()));
@@ -125,6 +128,7 @@ public class CalcFunctions {
                 NextOperation = operation;
                 _operand2 = 0.0;
             }
+
         } else {
             _operand1 = Double.parseDouble(getDisplayText().toString());
             if (!operation.equals(Operations.EQUAL)) {
@@ -161,6 +165,9 @@ public class CalcFunctions {
             case SQUARE:
                 temp = Math.pow(temp,2);
                 break;
+            case LOG:
+                temp = Math.log10(temp);
+                break;
         }
         if (needDisplayClear) {
             _operand1 = temp;
@@ -196,6 +203,11 @@ public class CalcFunctions {
         else
             sendToastMessage("Division by zero! Nothing done.");
     }
+
+    private void power() {
+        setResult(Math.pow(_operand1,_operand2));
+    }
+
 
 
     private void updateOperands(Double value) {

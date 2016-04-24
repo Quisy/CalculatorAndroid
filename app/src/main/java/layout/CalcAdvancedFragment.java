@@ -142,6 +142,14 @@ public class CalcAdvancedFragment extends Fragment implements View.OnClickListen
                 _calc.doOperation2(Operations.SQUARE);
                 break;
 
+            case R.id.btn_power:
+                _calc.doOperation(Operations.POWER);
+                break;
+
+            case R.id.btn_log:
+                _calc.doOperation2(Operations.LOG);
+                break;
+
         }
     }
 
