@@ -49,8 +49,15 @@ public class CalcFunctions {
 
         Editable text = getDisplayText();
 
-        if (text.length() == 1 && text.toString().equals("0") && !btn.getText().equals("."))
+        if (isNaN(Double.parseDouble(text.toString())) || text.toString().toLowerCase().contains("infinity"))
+        {
             text.clear();
+            text.append("0");
+        }
+
+        if ((text.length() == 1 && text.toString().equals("0") && !btn.getText().equals(".")))
+            text.clear();
+
 
         if (!((text.toString().contains(".") || text.length() == 0) && btn.getText().equals("."))) {
             setDisplayText(text.append(btn.getText()).toString());
@@ -65,16 +72,15 @@ public class CalcFunctions {
         Editable text = getDisplayText();
         int length = text.length();
         if (length > 0) {
-            if (length == 1 || (length == 2 && text.toString().contains("-")))
+            if (length == 1 || (length == 2 && text.toString().contains("-")) || isNaN(Double.parseDouble(text.toString())))
                 setDisplayText("0");
-            else if (text.toString().substring(length - 2, length - 1).equals("."))
+            else if (text.toString().substring(length - 2, length - 1).equals(".") || text.toString().substring(length - 2, length - 1).equals("E"))
                 setDisplayText((text.delete(length - 2, length)).toString());
             else
                 setDisplayText((text.delete(length - 1, length).toString()));
-        }
 
-//        if (op1 == 0)
-//            updateResult(Float.parseFloat(display.getText().toString()));
+            updateOperands(Double.parseDouble(getDisplayText().toString()));
+        }
     }
 
     public void clearDisplay() {
@@ -130,6 +136,48 @@ public class CalcFunctions {
     }
 
 
+    public void doOperation2(Operations operation) {
+        Double temp = Double.parseDouble(getDisplayText().toString());
+        double radians;
+        switch (operation) {
+            case SIN:
+                radians = Math.toRadians(temp);
+                temp = Math.sin(radians);
+                break;
+            case COS:
+                radians = Math.toRadians(temp);
+                temp = Math.cos(radians);
+                break;
+            case TAN:
+                radians = Math.toRadians(temp);
+                temp = Math.tan(radians);
+                break;
+            case LN:
+                temp = Math.log(temp);
+                break;
+            case SQRT:
+                temp = Math.sqrt(temp);
+                break;
+            case SQUARE:
+                temp = Math.pow(temp,2);
+                break;
+        }
+        if (needDisplayClear) {
+            _operand1 = temp;
+            _operand2 = Double.NaN;
+            NextOperation = null;
+            setDisplayText(temp.toString());
+        }
+        else
+        {
+            setDisplayText(temp.toString());
+        }
+
+        updateOperands(temp);
+
+    }
+
+
     private void add() {
         setResult(_operand1 + _operand2);
     }
@@ -149,12 +197,6 @@ public class CalcFunctions {
             sendToastMessage("Division by zero! Nothing done.");
     }
 
-    private void equal() {
-        if (_operand2 != 0)
-            _result = _operand1 / _operand2;
-        else
-            sendToastMessage("Division by zero! Nothing done.");
-    }
 
     private void updateOperands(Double value) {
         if (Double.isNaN(_operand1) || Double.isNaN(_operand2))
@@ -172,14 +214,6 @@ public class CalcFunctions {
         return _result;
     }
 
-    private void setOperandOne(Double value) {
-        _operand1 = value;
-    }
-
-    private void setOperandTwo(Double value) {
-        _operand2 = value;
-    }
-
     public Editable getDisplayText() {
         return _display.getText();
     }
@@ -195,5 +229,10 @@ public class CalcFunctions {
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    private boolean isNaN(Double value)
+    {
+        return Double.isNaN(value);
     }
 }

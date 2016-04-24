@@ -25,7 +25,9 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/display"
                 android:layout_span="4"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:inputType="none"
+                android:textIsSelectable="true"/>/>
 
         </TableRow>
 
@@ -84,6 +86,38 @@
             <Button
                 android:text="ln"
                 android:id="@+id/btn_ln"
+                android:layout_column="3"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+        </TableRow>
+
+        <TableRow android:layout_weight="0.3">
+
+
+            <Button
+                android:text="sqrt"
+                android:id="@+id/btn_sqrt"
+                android:layout_column="0"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+            <Button
+                android:text="x^2"
+                android:id="@+id/btn_square"
+                android:layout_column="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+            <Button
+                android:text="x^y"
+                android:id="@+id/btn_power"
+                android:layout_column="2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+            <Button
+                android:text="log"
+                android:id="@+id/btn_log"
                 android:layout_column="3"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"/>

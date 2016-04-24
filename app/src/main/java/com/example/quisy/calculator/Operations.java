@@ -8,5 +8,13 @@ public enum Operations {
     SUBSTRACT,
     MULTIPLY,
     DIVIDE,
-    EQUAL
+    EQUAL,
+    SIN,
+    COS,
+    TAN,
+    LN,
+    SQRT,
+    SQUARE,
+    POWER,
+    LOG
 }

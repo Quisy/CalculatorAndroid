@@ -104,10 +104,8 @@ public class CalcSimpleFragment extends Fragment implements View.OnClickListener
                 _calc.changeSign();
                 break;
 
-
         }
     }
-
 
 
     private void initButtons(View v) {

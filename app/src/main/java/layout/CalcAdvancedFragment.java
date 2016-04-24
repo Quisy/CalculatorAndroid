@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.quisy.calculator.CalcFunctions;
+import com.example.quisy.calculator.Operations;
 import com.example.quisy.calculator.R;
 
 /**
@@ -33,9 +36,10 @@ public class CalcAdvancedFragment extends Fragment implements View.OnClickListen
     public static final String COS_OPERATION = "cos";
     public static final String TAN_OPERATION = "tan";
     public static final String LN_OPERATION = "ln";
-    Button zero, one, two, three, four, five, six, seven, eight, nine, add, sub, mul, div, equal, cancel, delete, dot, sign, sin, cos, tan, ln;
+    Button zero, one, two, three, four, five, six, seven, eight, nine, add, sub, mul, div, equal, cancel, delete, dot, sign, sin, cos, tan, ln, sqrt, square, power, log;
     EditText display;
 
+    private CalcFunctions _calc;
 
     public CalcAdvancedFragment() {
         // Required empty public constructor
@@ -50,7 +54,15 @@ public class CalcAdvancedFragment extends Fragment implements View.OnClickListen
 
         initButtons(view);
         display = (EditText) view.findViewById(R.id.display);
+        display.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
+        display.setText("0");
 
+        _calc = new CalcFunctions(view,display,getActivity());
 
         return view;
     }
@@ -71,188 +83,68 @@ public class CalcAdvancedFragment extends Fragment implements View.OnClickListen
             case R.id.btn_9:
             case R.id.btn_dot:
                 Button btn = (Button) v.findViewById(v.getId());
-                appendChar(btn);
+                _calc.appendChar(btn);
                 break;
 
             case R.id.btn_delete:
-                deleteChar();
+                _calc.deleteChar();
                 break;
 
             case R.id.btn_cancel:
-                clearDisplay();
+                _calc.clearDisplay();
                 break;
 
             case R.id.btn_add:
-                doOperation(ADD_OPERATION);
+                _calc.doOperation(Operations.ADD);
                 break;
 
             case R.id.btn_sub:
-                doOperation(SUB_OPERATION);
+                _calc.doOperation(Operations.SUBSTRACT);
                 break;
 
             case R.id.btn_mul:
-                doOperation(MUL_OPERATION);
+                _calc.doOperation(Operations.MULTIPLY);
                 break;
 
             case R.id.btn_div:
-                doOperation(DIV_OPERATION);
+                _calc.doOperation(Operations.DIVIDE);
                 break;
 
             case R.id.btn_equal:
-                doOperation(EQUAL_OPERATION);
+                _calc.doOperation(Operations.EQUAL);
                 break;
 
             case R.id.btn_sign:
-                changeSign();
+                _calc.changeSign();
                 break;
 
             case R.id.btn_sin:
-                doOperation2(SIN_OPERATION);
+                _calc.doOperation2(Operations.SIN);
                 break;
 
             case R.id.btn_cos:
-                doOperation2(COS_OPERATION);
+                _calc.doOperation2(Operations.COS);
                 break;
 
             case R.id.btn_tan:
-                doOperation2(TAN_OPERATION);
+                _calc.doOperation2(Operations.TAN);
                 break;
 
             case R.id.btn_ln:
-                doOperation2(LN_OPERATION);
+                _calc.doOperation2(Operations.LN);
+                break;
+
+            case R.id.btn_sqrt:
+                _calc.doOperation2(Operations.SQRT);
+                break;
+
+            case R.id.btn_square:
+                _calc.doOperation2(Operations.SQUARE);
                 break;
 
         }
     }
 
-
-    private void changeSign() {
-        if (op1 == 0) {
-            updateResult(Double.parseDouble(display.getText().toString()) * -1);
-            display.setText(Double.toString(result));
-        } else
-            display.setText(Double.toString(Double.parseDouble(display.getText().toString()) * -1));
-    }
-
-    private void appendChar(Button btn) {
-        if (nextOperation != "" && !isCleared) {
-            isCleared = true;
-            display.setText("");
-        }
-
-        Editable text = display.getText();
-        if((!text.toString().contains(".") && btn == dot) || btn != dot)
-        {
-            display.setText(text.append(btn.getText()));
-        }
-    }
-
-    private void deleteChar() {
-        Editable text = display.getText();
-        int length = text.length();
-        if (length == 1)
-            display.setText("0");
-        else if (text.toString().substring(length - 2, length - 1).equals("."))
-            display.setText(text.delete(length - 2, length));
-        else
-            display.setText(text.delete(length - 1, length));
-
-        if (op1 == 0)
-            updateResult(Double.parseDouble(display.getText().toString()));
-    }
-
-    private void clearDisplay() {
-        display.setText("");
-        updateResult(Double.parseDouble("0"));
-        nextOperation = "";
-
-    }
-
-    private void doOperation(String operationType) {
-        if (op1 != 0) {
-            op2 = Double.parseDouble(display.getText().toString());
-            switch (nextOperation.toLowerCase()) {
-                case ADD_OPERATION:
-                    result += op2;
-                    break;
-                case SUB_OPERATION:
-                    result -= op2;
-                    break;
-                case MUL_OPERATION:
-                    result *= op2;
-                    break;
-                case DIV_OPERATION:
-                    if (op2 != 0)
-                        result /= op2;
-                    else
-                        sendToastMessage("Division by zero! Nothing done.");
-                    break;
-            }
-
-            display.setText(Double.toString(result));
-            if (operationType != EQUAL_OPERATION) {
-                nextOperation = operationType;
-                op1 = Double.parseDouble(display.getText().toString());
-            } else {
-                nextOperation = "";
-                op1 = 0;
-            }
-
-
-            isCleared = false;
-        } else {
-            updateResult(Double.parseDouble(display.getText().toString()));
-            op1 = Double.parseDouble(display.getText().toString());
-            nextOperation = operationType;
-            display.setText("");
-        }
-
-    }
-
-    private void doOperation2(String operationType) {
-
-        Double temp = Double.parseDouble(display.getText().toString());
-        double radians;
-        switch (operationType.toLowerCase()) {
-            case SIN_OPERATION:
-                radians = Math.toRadians(temp);
-                temp = Math.sin(radians);
-                break;
-            case COS_OPERATION:
-                radians = Math.toRadians(temp);
-                temp = Math.cos(radians);
-                break;
-            case TAN_OPERATION:
-                radians = Math.toRadians(temp);
-                temp = Math.tan(radians);
-                break;
-            case LN_OPERATION:
-                temp = Math.log(temp);
-                break;
-        }
-
-        if (op1 == 0) {
-            updateResult(temp);
-            display.setText(Double.toString(result));
-        } else
-            display.setText(Double.toString(temp));
-    }
-
-
-    private void updateResult(Double value) {
-        result = value;
-    }
-
-
-    private void sendToastMessage(String message)
-    {
-        Context context = getActivity().getApplicationContext();
-        CharSequence text = message;
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
 
     private void initButtons(View v) {
         zero = (Button) v.findViewById(R.id.btn_0);
@@ -305,6 +197,15 @@ public class CalcAdvancedFragment extends Fragment implements View.OnClickListen
         tan.setOnClickListener(this);
         ln = (Button) v.findViewById(R.id.btn_ln);
         ln.setOnClickListener(this);
+
+        sqrt = (Button) v.findViewById(R.id.btn_sqrt);
+        sqrt.setOnClickListener(this);
+        square = (Button) v.findViewById(R.id.btn_square);
+        square.setOnClickListener(this);
+        power = (Button) v.findViewById(R.id.btn_power);
+        power.setOnClickListener(this);
+        log = (Button) v.findViewById(R.id.btn_log);
+        log.setOnClickListener(this);
 
     }
 
